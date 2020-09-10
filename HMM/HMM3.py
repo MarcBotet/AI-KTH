@@ -60,14 +60,14 @@ def calculate(initial_state):
         alpha[0][i] = ct[0] * alpha[0][i]
 
     for t in range(1, T):
-        ct[t] = 0
         for i in range(n):
             for j in range(n):
                 alpha[t][i] = alpha[t][i] + alpha[t-1][j] * A[j][i]
             alpha[t][i] = alpha[t][i] * B[i][emissions[t]]
             ct[t] = ct[t] + alpha[t][i]
+
         # scale
-        ct = [1 / x if x!= 0 else 0 for x in ct]
+        ct[t] = 1 / ct[t]
         for i in range(n):
             alpha[t][i] = ct[t] * alpha[t][i]
 
@@ -101,9 +101,6 @@ def calculate(initial_state):
     # re-estimate A, B and pi
 
     # pi
-    print("eoeoeoeoeoeooe")
-    #print(gamma)
-    print("yuyuuyyuyuyuyu")
     initial_state = gamma[0].copy()
     # A
     for i in range(n):
@@ -135,10 +132,10 @@ def calculate(initial_state):
         logprob = logprob + math.log(ct[i])
     logprob = -logprob
 
-    return logprob, initial_state
+    return logprob, [initial_state]
 
 
-maxIters = 100
+maxIters = 30
 
 a = [float(x) for x in input().split()]
 b = [float(x) for x in input().split()]
@@ -152,14 +149,21 @@ n = int(a[0])
 B = create_matrix(int(b[0]), int(b[1]), b[2:])
 m = int(b[1])
 PI = create_matrix(int(pi[0]), int(pi[1]), pi[2:])
-print(PI)
+
 # to iterate or not iterate
 logprob = 1
-oldlogprob = 0
+oldlogprob = -math.inf
 iters = 0
 while iters < maxIters and logprob > oldlogprob:
     iters = iters + 1
+    if iters != 1: oldlogprob = logprob
     logprob, PI = calculate(PI)
-    oldlogprob = logprob
+
+A = ' '.join(map(lambda x: ' '.join(map(str, x)), A))
+print(n, n, A)
+B = ' '.join(map(lambda x: ' '.join(map(str, x)), B))
+print(n, m, B)
+
+
 
 
