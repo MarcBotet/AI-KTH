@@ -1,5 +1,7 @@
 from pprint import pprint
 import math
+
+
 def create_matrix(num_row, num_column, l):
     mat = []
     for i in range(num_row):
@@ -14,13 +16,17 @@ def transpose(matrix):
     return list(map(list, zip(*matrix)))
 
 
-def matrix_multiply(matrix_a, matrix_b):
+def matrix_multiply2(matrix_a, matrix_b):
     mat = [[0] * len(matrix_b[0])] * len(matrix_a)
     for i in range(len(matrix_a)):
         for j in range(len(matrix_b[0])):
             for k in range(len(matrix_b)):
                 mat[i][j] += matrix_a[i][k] * matrix_b[k][j]
     return mat
+
+
+def matrix_multiply(X, Y):
+    return [[sum(a * b for a, b in zip(X_row, Y_col)) for Y_col in zip(*Y)] for X_row in X]
 
 
 def elementwise_multiply(matrix_a: list, matrix_b):

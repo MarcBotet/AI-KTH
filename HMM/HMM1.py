@@ -1,4 +1,3 @@
-
 def create_matrix(num_row, num_column, l):
     mat = []
     for i in range(num_row):
@@ -10,10 +9,11 @@ def create_matrix(num_row, num_column, l):
 
 
 def transpose(matrix):
-    return list(map(list, zip(*matrix)))
+    return [list(i) for i in zip(*matrix)]
+    # return list(map(list, zip(*matrix)))
 
 
-def matrix_multiply(matrix_a, matrix_b):
+def matrix_multiply2(matrix_a, matrix_b):
     mat = [[0] * len(matrix_b[0])] * len(matrix_a)
     for i in range(len(matrix_a)):
         for j in range(len(matrix_b[0])):
@@ -22,12 +22,16 @@ def matrix_multiply(matrix_a, matrix_b):
     return mat
 
 
+def matrix_multiply(X, Y):
+    return [[sum(a * b for a, b in zip(X_row, Y_col)) for Y_col in zip(*Y)] for X_row in X]
+
+
 def elementwise_multiply2(matrix_a, matrix_b):
-    return [[a[0]*b[0]] for a, b in zip(matrix_a, matrix_b)]
+    return [[a[0] * b[0]] for a, b in zip(matrix_a, matrix_b)]
 
 
 def elementwise_multiply(matrix_a, matrix_b):
-    return [[a*b for a, b in zip(matrix_a[0], matrix_b)]]
+    return [[a * b for a, b in zip(matrix_a[0], matrix_b)]]
 
 
 a = [float(x) for x in input().split()]
